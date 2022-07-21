@@ -2,6 +2,7 @@ from AGD import AGD
 import os
 from openpyxl import load_workbook
 
+# exists file
 def exists(path):
     try:
         os.stat(path)
