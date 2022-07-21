@@ -21,3 +21,5 @@ class AGD:
         self.country = country
         self.price = price
         self.price_with_delivery = price_with_delivery
+
+    def GetName(self): return self.name

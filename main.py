@@ -1,10 +1,12 @@
 from itertools import count
 from marpa import FromMarpa
 from AGD import AGD
+from openpyxl import load_workbook
 
 agd = []
 delivery = 1.2
 NORMA = 2300
+KURS_PLN = 0
 
 def PrintAGD(obj):
     print(f"name= {obj.name}\n\
@@ -33,15 +35,45 @@ def PriceDelivery():
                 obj.price_with_delivery = round(obj.price/1.23+400)
             elif obj.price > NORMA:              
                 obj.price_with_delivery = round(obj.price/1.23+400+percent)
-
         else: obj.price_with_delivery = round(obj.price/1.23*delivery)
+
+#load KURS PLN
+# def LoadKursPLN():
+def WriteToPrice():
+    wb = load_workbook('price_vasyl.xlsx')
+    sheet = wb.active
+    
+    # Clear
+    maxColumn = int(sheet.max_column + 1)
+    maxRow = int(sheet.max_row + 1)
+    for i in range(1, maxColumn):
+        for j in range(2, maxRow):
+            sheet.cell(column=i, row=j).value = None 
+
+    counter = 1
+    for obj in agd:
+        sheet.cell(column=1, row=counter+1).value = counter
+        sheet.cell(column=2, row=counter+1).value = obj.name
+        sheet.cell(column=3, row=counter+1).value = obj.description
+        sheet.cell(column=4, row=counter+1).value = obj.count
+        sheet.cell(column=5, row=counter+1).value = obj.rezervacion
+        sheet.cell(column=6, row=counter+1).value = obj.price
+        sheet.cell(column=7, row=counter+1).value = obj.price_with_delivery
+        formula_uah=f"=G{counter+1}*$K$1"
+        sheet.cell(column=8, row=counter+1).value = formula_uah
+        sheet.cell(column=9, row=counter+1).value = "marpa"
+        sheet.cell(column=10, row=counter+1).value = obj.type
+        counter += 1
+
+    wb.save("price_vasyl.xlsx") 
 
 FromMarpa(agd)
 print(f"Load from MARPA: {len(agd)} objects")
 PriceDelivery()
+WriteToPrice()
 # for i in agd:
 #     PrintAGD(i)
-PrintAGD(agd[162])
+# PrintAGD(agd[162])
 
     # wb.save('MARPA.xlsx')
 
