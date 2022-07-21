@@ -11,7 +11,6 @@ def exists(path):
         return False
     print(f"File: {path} is exists")
     return True
-
 #convert fild PRICE in normal number
 def PriceToBrutto(price):
     price = price.replace("  ", " ")

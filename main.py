@@ -1,15 +1,16 @@
 from itertools import count
-from marpa import FromMarpa
+from marpa import FromMarpa, exists
 from AGD import AGD
 from openpyxl import load_workbook
 
 agd = []
 delivery = 1.2
 NORMA = 2300
-KURS_PLN = 0
 
+
+#print object to console
 def PrintAGD(obj):
-    print(f"name= {obj.name}\n\
+    print(f"name= {obj.GetName()}\n\
             type= {obj.type}\n\
             count= {obj.count}\n\
             rezervacion= {obj.rezervacion}\n\
@@ -18,6 +19,7 @@ def PrintAGD(obj):
             price= {obj.price}\n\
             price_with_delivery= {obj.price_with_delivery}\n")
 
+# count and add delivery to price
 def PriceDelivery():
     for obj in agd:
         if   obj.name.find("CHŁODZ") >= 0: obj.type = "freezer"
@@ -25,6 +27,7 @@ def PriceDelivery():
     
     for obj in agd:
         percent = (obj.price - NORMA)/1.23*(delivery-1)
+        
         if obj.type == "freezer": 
             if obj.price > 1000 and obj.price < NORMA: 
                 obj.price_with_delivery = round(obj.price/1.23+450)
@@ -64,7 +67,7 @@ def WriteToPrice():
         sheet.cell(column=9, row=counter+1).value = "marpa"
         sheet.cell(column=10, row=counter+1).value = obj.type
         counter += 1
-
+    print(f"Write to price: {sheet.max_row-1} objects")
     wb.save("price_vasyl.xlsx") 
 
 FromMarpa(agd)

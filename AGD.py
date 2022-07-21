@@ -1,6 +1,4 @@
-from itertools import count
-
-
+# class AGD
 class AGD:
     name = ""
     type = ""
