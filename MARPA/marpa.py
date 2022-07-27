@@ -24,8 +24,8 @@ def PriceToBrutto(price):
     return price
 
 def FromMarpa(agd):
-    if exists('MARPA.xlsx'):
-        wb = load_workbook('MARPA.xlsx')
+    if exists('MARPA/MARPA.xlsx'):
+        wb = load_workbook('MARPA/MARPA.xlsx')
         sheet = wb.active  
 
         # print("max row in MARPA =" + str(sheet.max_row))

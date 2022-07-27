@@ -1,7 +1,8 @@
 from itertools import count
-from marpa import FromMarpa, exists
+from MARPA.marpa import FromMarpa, exists
 from AGD import AGD
 from openpyxl import load_workbook
+from notebooks.notebooks import WriteToNotebooks
 
 agd = []
 delivery = 1.2
@@ -67,16 +68,16 @@ def WriteToPrice():
         sheet.cell(column=9, row=counter+1).value = "marpa"
         sheet.cell(column=10, row=counter+1).value = obj.type
         counter += 1
-    print(f"Write to price: {sheet.max_row-1} objects")
+    print(f"Write to price: {counter-1} objects")
     wb.save("price_vasyl.xlsx") 
 
-FromMarpa(agd)
-print(f"Load from MARPA: {len(agd)} objects")
-PriceDelivery()
-WriteToPrice()
-# for i in agd:
-#     PrintAGD(i)
-# PrintAGD(agd[162])
 
-    # wb.save('MARPA.xlsx')
+# Load from MARPA and write to price
+# FromMarpa(agd)
+# print(f"Load from MARPA: {len(agd)} objects")
+# PriceDelivery()
+# WriteToPrice()
 
+# LAPTOPS
+# laptops = AGD()
+# WriteToNotebooks(laptops)
