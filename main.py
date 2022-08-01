@@ -2,7 +2,7 @@ from itertools import count
 from MARPA.marpa import FromMarpa, exists
 from AGD import AGD
 from openpyxl import load_workbook
-from notebooks.notebooks import WriteToNotebooks
+# from notebooks.notebooks import WriteToNotebooks
 
 agd = []
 delivery = 1.2
@@ -73,10 +73,10 @@ def WriteToPrice():
 
 
 # Load from MARPA and write to price
-# FromMarpa(agd)
-# print(f"Load from MARPA: {len(agd)} objects")
-# PriceDelivery()
-# WriteToPrice()
+FromMarpa(agd)
+print(f"Load from MARPA: {len(agd)} objects")
+PriceDelivery()
+WriteToPrice()
 
 # LAPTOPS
 # laptops = AGD()
