@@ -21,3 +21,4 @@ class AGD:
         self.price_with_delivery = price_with_delivery
 
     def GetName(self): return self.name
+    def GetType(self): return self.type
