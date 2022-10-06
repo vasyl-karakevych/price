@@ -36,6 +36,7 @@ def FromMarpa(agd):
                         rezervacion = sheet.cell(column = 3, row = l).value,
                         description = sheet.cell(column = 4, row = l).value,
                         price = PriceToBrutto(sheet.cell(column = 5, row = l).value),
-                        country = sheet.cell(column = 6, row = l).value)
+                        country = sheet.cell(column = 6, row = l).value,
+                        sklad = 'marpa')
             agd.append(obj)
     return agd

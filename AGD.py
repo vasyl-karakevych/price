@@ -8,9 +8,10 @@ class AGD:
     country = ""
     price = 0
     price_with_delivery = 0
+    sklad = ""
 
     def __init__(self, name="", type="agd", count=0, rezervacion=0, description="", 
-                        country="", price=0, price_with_delivery=0):
+                        country="", price=0, price_with_delivery=0, sklad=""):
         self.name = name
         self.type = type
         self.count = count
@@ -19,6 +20,7 @@ class AGD:
         self.country = country
         self.price = price
         self.price_with_delivery = price_with_delivery
+        self.sklad = sklad
 
     # return values of AGD
     def GetName(self): return self.name
@@ -29,6 +31,7 @@ class AGD:
     def GetCountry(self): return self.count
     def GetPrice(self): return self.price
     def GetPriceWD(self): return self.price_with_delivery
+    def GetSklad(self): return self.sklad
 
     # set values of AGD
     def SetName(self, name):

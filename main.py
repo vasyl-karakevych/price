@@ -1,5 +1,6 @@
 from itertools import count
 from MARPA.marpa import FromMarpa, exists
+from NEXA.nexa import FromNexa, exists
 from AGD import AGD
 from openpyxl import load_workbook
 # from notebooks.notebooks import WriteToNotebooks
@@ -18,11 +19,15 @@ def PrintAGD(obj):
             description= {obj.description}\n\
             country= {obj.country}\n\
             price= {obj.price}\n\
-            price_with_delivery= {obj.price_with_delivery}\n")
+            price_with_delivery= {obj.price_with_delivery}\n\
+            type = {obj.type}\n")
 
 # count and add delivery to price
 def PriceDelivery():
+    #k = 1
     for obj in agd:
+        #print(k, obj.name)
+        #k+=1
         if   obj.name.find("CHŁODZ") >= 0: obj.type = "freezer"
         elif obj.name.find("PRALKA") >= 0: obj.type = "pralka"
     
@@ -30,7 +35,7 @@ def PriceDelivery():
         percent = (obj.price - NORMA)/1.23*(delivery-1)
         
         if obj.type == "freezer": 
-            if obj.price > 1000 and obj.price < NORMA: 
+            if obj.price > 1000 and obj.price < NORMA:
                 obj.price_with_delivery = round(obj.price/1.23+500)
             elif obj.price > NORMA:
                 obj.price_with_delivery = round(obj.price/1.23+500+percent)
@@ -65,7 +70,7 @@ def WriteToPrice():
         sheet.cell(column=7, row=counter+1).value = obj.price_with_delivery
         formula_uah=f"=G{counter+1}*$K$1"
         sheet.cell(column=8, row=counter+1).value = formula_uah
-        sheet.cell(column=9, row=counter+1).value = "marpa"
+        sheet.cell(column=9, row=counter+1).value = obj.sklad
         sheet.cell(column=10, row=counter+1).value = obj.type
         counter += 1
     print(f"Write to price: {counter-1} objects")
@@ -74,12 +79,16 @@ def WriteToPrice():
 
 # Load from MARPA and write to price
 FromMarpa(agd)
-print(f"Load from MARPA: {len(agd)} objects")
-# FromGlobal(agd)
-#print(f"Load from MARPA: {len(agd)} objects")
+len_marpa = len(agd)
+print(f"Load from MARPA: {len_marpa} objects")
+
+FromNexa(agd)
+len_nexa = len(agd) - len_marpa
+print(f"Load from Nexa: {len_nexa} objects")
+PrintAGD(agd[1200])
 PriceDelivery()
 WriteToPrice()
 
 # LAPTOPS
 # laptops = AGD()
-# WriteToNotebooks(laptops)
+# WriteToNotebooks(laptops)git 
