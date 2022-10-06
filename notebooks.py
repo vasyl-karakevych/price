@@ -94,7 +94,7 @@ def FromNotebooks():
                     count = sheet.cell(column = 3, row = l).value,                  
                     netto = sheet.cell(column = 4, row = l).value,
                     description = sheet.cell(column = 6, row = l).value,
-                    price_with_delivery = round(int(sheet.cell(column = 4, row = l).value*1.2))) #percent                 
+                    price_with_delivery = round(int(sheet.cell(column = 4, row = l).value))) #percent                 
             laptops.append(obj)
 
     print(f"Loaded {len(laptops)} laptops")

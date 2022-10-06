@@ -31,14 +31,14 @@ def PriceDelivery():
         
         if obj.type == "freezer": 
             if obj.price > 1000 and obj.price < NORMA: 
-                obj.price_with_delivery = round(obj.price/1.23+450)
+                obj.price_with_delivery = round(obj.price/1.23+500)
             elif obj.price > NORMA:
-                obj.price_with_delivery = round(obj.price/1.23+450+percent)
+                obj.price_with_delivery = round(obj.price/1.23+500+percent)
         elif obj.type == "pralka":
             if obj.price < NORMA: 
-                obj.price_with_delivery = round(obj.price/1.23+400)
+                obj.price_with_delivery = round(obj.price/1.23+450)
             elif obj.price > NORMA:              
-                obj.price_with_delivery = round(obj.price/1.23+400+percent)
+                obj.price_with_delivery = round(obj.price/1.23+450+percent)
         else: obj.price_with_delivery = round(obj.price/1.23*delivery)
 
 #load KURS PLN
@@ -75,6 +75,8 @@ def WriteToPrice():
 # Load from MARPA and write to price
 FromMarpa(agd)
 print(f"Load from MARPA: {len(agd)} objects")
+# FromGlobal(agd)
+#print(f"Load from MARPA: {len(agd)} objects")
 PriceDelivery()
 WriteToPrice()
 
