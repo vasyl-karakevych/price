@@ -1,6 +1,6 @@
 from itertools import count
 from MARPA.marpa import FromMarpa, exists
-from NEXA.nexa import FromNexa, exists
+from NEXA.nexa import FromNexa, FromNexaZakaz, exists
 from AGD import AGD
 from openpyxl import load_workbook
 # from notebooks.notebooks import WriteToNotebooks
@@ -8,7 +8,8 @@ from openpyxl import load_workbook
 agd = []
 delivery = 1.2
 NORMA = 2300
-
+freezer = 550
+pralka = 500
 
 #print object to console
 def PrintAGD(obj):
@@ -28,23 +29,24 @@ def PriceDelivery():
     for obj in agd:
         #print(k, obj.name)
         #k+=1
-        if   obj.name.find("CHŁODZ") >= 0: obj.type = "freezer"
-        elif obj.name.find("PRALKA") >= 0: obj.type = "pralka"
+        if   obj.name.find("CHŁODZ") >= 0 or obj.name.find("Chłodziarka") >=0 or obj.name.find("LODÓWKA") >=0 : obj.type = "freezer"
+        elif obj.name.find("PRALKA") >= 0 or obj.name.find("Pralka") >= 0: obj.type = "pralka"
+        elif obj.name.find("PRALKO_SUSZ") >= 0: obj.type = "pralko-susharka"
     
     for obj in agd:
         percent = (obj.price - NORMA)/1.23*(delivery-1)
-        
-        if obj.type == "freezer": 
-            if obj.price > 1000 and obj.price < NORMA:
-                obj.price_with_delivery = round(obj.price/1.23+500)
-            elif obj.price > NORMA:
-                obj.price_with_delivery = round(obj.price/1.23+500+percent)
-        elif obj.type == "pralka":
-            if obj.price < NORMA: 
-                obj.price_with_delivery = round(obj.price/1.23+450)
-            elif obj.price > NORMA:              
-                obj.price_with_delivery = round(obj.price/1.23+450+percent)
-        else: obj.price_with_delivery = round(obj.price/1.23*delivery)
+        if obj.price > 0:
+            if obj.type == "freezer": 
+                if obj.price > 1000 and obj.price < NORMA:
+                    obj.price_with_delivery = round(obj.price/1.23 + freezer)
+                elif obj.price > NORMA:
+                    obj.price_with_delivery = round(obj.price/1.23 + freezer + percent)
+            elif obj.type == "pralka" or obj.type == "pralko-susharka":
+                if obj.price < NORMA: 
+                    obj.price_with_delivery = round(obj.price/1.23 + pralka)
+                elif obj.price > NORMA:              
+                    obj.price_with_delivery = round(obj.price/1.23 + pralka + percent)
+            else: obj.price_with_delivery = round(obj.price/1.23*delivery)
 
 #load KURS PLN
 # def LoadKursPLN():
@@ -85,10 +87,15 @@ print(f"Load from MARPA: {len_marpa} objects")
 FromNexa(agd)
 len_nexa = len(agd) - len_marpa
 print(f"Load from Nexa: {len_nexa} objects")
-PrintAGD(agd[1200])
+
+FromNexaZakaz(agd)
+len_nexa_zakaz = len(agd) - len_nexa
+print(f"Load from Nexa for order: {len_nexa_zakaz} objects")
+#PrintAGD(agd[1200])
+
 PriceDelivery()
 WriteToPrice()
 
 # LAPTOPS
-# laptops = AGD()
-# WriteToNotebooks(laptops)git 
+laptops = AGD()
+WriteToNotebooks(laptops)

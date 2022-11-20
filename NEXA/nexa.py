@@ -30,3 +30,27 @@ def FromNexa(agd):
                         sklad = 'nexa')
             agd.append(obj)
     return agd
+
+def PriceToBrutto(price):
+    price = price.replace("  ", " ")
+    price = price.split(' ')
+    return price[0]
+
+def FromNexaZakaz(agd):
+    if exists('NEXA/NEXA-ZAKAZ.xlsx'):
+        wb = load_workbook('NEXA/NEXA-ZAKAZ.xlsx')
+        sheet = wb.active  
+
+        # print("max row in MARPA =" + str(sheet.max_row))
+        for l in range(2, int(sheet.max_row)):
+            # print(f"try add {l}")
+            name_temp = str(sheet.cell(column = 2, row = l).value)
+            if len(name_temp) > 5:
+                obj = AGD(name = name_temp, 
+                        count = sheet.cell(column = 4, row = l).value,
+                        # rezervacion = sheet.cell(column = 3, row = l).value,
+                        # description = sheet.cell(column = 5, row = l).value,
+                        price = sheet.cell(column = 7, row = l).value,
+                        sklad = 'nexa Zakaz')
+                agd.append(obj)
+    return agd
