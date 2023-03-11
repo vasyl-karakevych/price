@@ -48,9 +48,7 @@ def FromNexaZakaz(agd):
             if len(name_temp) > 5:
                 obj = AGD(name = name_temp, 
                         count = sheet.cell(column = 4, row = l).value,
-                        # rezervacion = sheet.cell(column = 3, row = l).value,
-                        # description = sheet.cell(column = 5, row = l).value,
                         price = sheet.cell(column = 7, row = l).value,
-                        sklad = 'nexa Zakaz')
+                        sklad = 'nexa Під замовлення')
                 agd.append(obj)
     return agd

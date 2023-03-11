@@ -94,7 +94,7 @@ def FromNotebooks():
                     count = sheet.cell(column = 3, row = l).value,                  
                     netto = sheet.cell(column = 4, row = l).value,
                     description = sheet.cell(column = 6, row = l).value,
-                    price_with_delivery = round(int(sheet.cell(column = 5, row = l).value))) #percent                 
+                    price_with_delivery = round(int(sheet.cell(column = 5, row = l).value)/1.23*1.2)) #percent                 
             laptops.append(obj)
 
     print(f"Loaded {len(laptops)} laptops")
@@ -108,7 +108,7 @@ def FromNotebooks():
     #write price from obj
     count = 2
     for i in laptops:
-        if i.symbol[-3:] == "A2N": continue # if keyboard==A2N - Arabic than do not write
+        if i.symbol[-3:] == "A2N" or i.symbol[-3:] == "ABV" or i.symbol[-3:] == "AB7" or i.symbol[-3:] == "AB8": continue # if keyboard==A2N - Arabic than do not write
         sheet.cell(row=count, column=1).value = count-1
         sheet.cell(row=count, column=2).value = i.GetSymbol()
         sheet.cell(row=count, column=3).value = i.GetKeyboard()

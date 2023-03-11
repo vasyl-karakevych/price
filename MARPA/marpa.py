@@ -13,15 +13,16 @@ def exists(path):
     return True
 #convert fild PRICE in normal number
 def PriceToBrutto(price):
+    if price[0] == '.': return 0
     price = price.replace("  ", " ")
     price = price.split(' ')
     # print (price)
-    if len(price) > 1:
-        if price[1][0] == 'B': price = int(price[0])
-        elif price[1][0] == 'N': price = round(int(price[0])*1.23)
-        else: price = 0
-    else: price = 0
-    return price
+    # if len(price) > 1:
+    #     if price[1][0] == 'B': price = int(price[0])
+    #     elif price[1][0] == 'N': price = round(int(price[0])*1.23)
+    #     else: price = 0
+    # else: price = 0
+    return price[0]
 
 def FromMarpa(agd):
     if exists('MARPA/MARPA.xlsx'):
@@ -35,7 +36,7 @@ def FromMarpa(agd):
                         count = sheet.cell(column = 2, row = l).value,
                         rezervacion = sheet.cell(column = 3, row = l).value,
                         description = sheet.cell(column = 4, row = l).value,
-                        price = PriceToBrutto(sheet.cell(column = 5, row = l).value),
+                        price = int(PriceToBrutto(sheet.cell(column = 5, row = l).value)),
                         country = sheet.cell(column = 6, row = l).value,
                         sklad = 'marpa')
             agd.append(obj)
