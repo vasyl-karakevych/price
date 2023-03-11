@@ -69,10 +69,10 @@ def WriteToPrice():
             sheet.cell(column=5, row=counter+1).value = obj.rezervacion
             sheet.cell(column=6, row=counter+1).value = obj.price
             sheet.cell(column=7, row=counter+1).value = obj.price_with_delivery
-            formula_uah=f"=G{counter+1}*$K$1"
-            sheet.cell(column=8, row=counter+1).value = formula_uah
+            sheet.cell(column=8, row=counter+1).value = f"=G{counter+1}*$L$1"
             sheet.cell(column=9, row=counter+1).value = obj.sklad
             sheet.cell(column=10, row=counter+1).value = obj.type
+            sheet.cell(column=11, row=counter+1).value = obj.country
             counter += 1
     print(f"Write to price: {counter-1} objects")
     wb.save("price_vasyl.xlsx") 
