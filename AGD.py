@@ -28,7 +28,7 @@ class AGD:
     def GetCount(self): return self.count
     def GetRezervacion(self): return self.rezervacion
     def GetDescription(self): return self.description
-    def GetCountry(self): return self.count
+    def GetCountry(self): return self.country
     def GetPrice(self): return self.price
     def GetPriceWD(self): return self.price_with_delivery
     def GetSklad(self): return self.sklad

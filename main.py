@@ -19,9 +19,8 @@ def PrintAGD(obj):
             rezervacion= {obj.rezervacion}\n\
             description= {obj.description}\n\
             country= {obj.country}\n\
-            price= {obj.price}\n\
-            price_with_delivery= {obj.price_with_delivery}\n\
-            type = {obj.type}\n")
+            price= {obj.GetPrice()}\n\
+            price_with_delivery= {obj.GetPriceWD()}\n")
 
 # count and add delivery to price
 def PriceDelivery():
@@ -32,8 +31,8 @@ def PriceDelivery():
     
     for obj in agd:
         brutto = obj.price
-        netto = obj.price/1.23
-        percent =  int(brutto)
+        netto = brutto/1.23
+        percent =  netto * (delivery-1)
 
         if brutto > 0:
             if obj.type == "freezer": 
@@ -63,16 +62,16 @@ def WriteToPrice():
     for obj in agd:
         if (obj.count >0):
             sheet.cell(column=1, row=counter+1).value = counter
-            sheet.cell(column=2, row=counter+1).value = obj.name
-            sheet.cell(column=3, row=counter+1).value = obj.description
-            sheet.cell(column=4, row=counter+1).value = obj.count
-            sheet.cell(column=5, row=counter+1).value = obj.rezervacion
-            sheet.cell(column=6, row=counter+1).value = obj.price
+            sheet.cell(column=2, row=counter+1).value = obj.GetName()
+            sheet.cell(column=3, row=counter+1).value = obj.GetDescription()
+            sheet.cell(column=4, row=counter+1).value = obj.GetCount()
+            sheet.cell(column=5, row=counter+1).value = obj.GetRezervacion()
+            sheet.cell(column=6, row=counter+1).value = obj.GetPrice()
             sheet.cell(column=7, row=counter+1).value = obj.price_with_delivery
             sheet.cell(column=8, row=counter+1).value = f"=G{counter+1}*$L$1"
-            sheet.cell(column=9, row=counter+1).value = obj.sklad
-            sheet.cell(column=10, row=counter+1).value = obj.type
-            sheet.cell(column=11, row=counter+1).value = obj.country
+            sheet.cell(column=9, row=counter+1).value = obj.GetSklad()
+            sheet.cell(column=10, row=counter+1).value = obj.GetType()
+            sheet.cell(column=11, row=counter+1).value = obj.GetCountry()
             counter += 1
     print(f"Write to price: {counter-1} objects")
     wb.save("price_vasyl.xlsx") 
@@ -94,6 +93,7 @@ print(f"Load from Nexa for order: {len_nexa_zakaz} objects\n")
 
 
 PriceDelivery()
+PrintAGD(agd[54])
 WriteToPrice()
 
 # LAPTOPS
