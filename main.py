@@ -28,11 +28,14 @@ def PriceDelivery():
         if   obj.name.find("CHŁODZ") >= 0 or obj.name.find("Chłodziarka") >=0 or obj.name.find("LODÓWKA") >=0 : obj.type = "freezer"
         elif obj.name.find("PRALKA") >= 0 or obj.name.find("Pralka") >= 0: obj.type = "pralka"
         elif obj.name.find("PRALKO_SUSZ") >= 0: obj.type = "pralko-susharka"
+        elif obj.name.find("TV ") >= 0: obj.type = "TV"
     
     for obj in agd:
+        if obj.type == "TV": obj.price = obj.price * 1.23
         brutto = obj.price
         netto = brutto/1.23
         percent =  netto * (delivery-1)
+
 
         if brutto > 0:
             if obj.type == "freezer": 
@@ -87,13 +90,13 @@ FromNexa(agd)
 len_nexa = len(agd) - len_marpa
 print(f"Load from Nexa: {len_nexa} objects\n")
 
-FromNexaZakaz(agd)
-len_nexa_zakaz = len(agd) - len_nexa
-print(f"Load from Nexa for order: {len_nexa_zakaz} objects\n")
+# FromNexaZakaz(agd)
+# len_nexa_zakaz = len(agd) - len_nexa
+# print(f"Load from Nexa for order: {len_nexa_zakaz} objects\n")
 
 
 PriceDelivery()
-PrintAGD(agd[54])
+# PrintAGD(agd[54])
 WriteToPrice()
 
 # LAPTOPS
