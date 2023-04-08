@@ -9,7 +9,7 @@ agd = []
 delivery = 1.18
 NORMA = 2300
 freezer = 500
-pralka = 350
+pralka = 400
 
 #print object to console
 def PrintAGD(obj):
