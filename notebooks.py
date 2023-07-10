@@ -92,12 +92,13 @@ def FromNotebooks():
             obj = laptop(symbol = sheet.cell(column = 1, row = l).value, 
                     name = sheet.cell(column = 2, row = l).value,
                     count = sheet.cell(column = 3, row = l).value,                  
-                    netto = sheet.cell(column = 4, row = l).value,
-                    description = sheet.cell(column = 6, row = l).value,
-                    price_with_delivery = round(int(sheet.cell(column = 5, row = l).value)/1.23*1.2)) #percent                 
+                    netto = sheet.cell(column = 4, row = l).value/1.23,
+                    description = sheet.cell(column = 5, row = l).value,
+                    price_with_delivery = round(int(sheet.cell(column = 4, row = l).value)/1.23*1.15)) #percent                 
             laptops.append(obj)
 
-    print(f"Loaded {len(laptops)} laptops")
+    print(f"Loaded {len(laptops)} laptops!!!")
+    obj.printNotebooks()
     # insert keyboard i list of object
     for i in laptops:
         laptop.Keyboard(i)

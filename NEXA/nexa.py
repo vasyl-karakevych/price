@@ -18,7 +18,6 @@ def FromNexa(agd):
         wb = load_workbook('NEXA/NEXA.xlsx')
         sheet = wb.active  
 
-        # print("max row in MARPA =" + str(sheet.max_row))
         for l in range(2, int(sheet.max_row)):
             # print(f"try add {l}")
             obj = AGD(name = sheet.cell(column = 2, row = l).value, 
@@ -41,14 +40,13 @@ def FromNexaZakaz(agd):
         wb = load_workbook('NEXA/NEXA-ZAKAZ.xlsx')
         sheet = wb.active  
 
-        # print("max row in MARPA =" + str(sheet.max_row))
         for l in range(2, int(sheet.max_row)):
             # print(f"try add {l}")
-            name_temp = str(sheet.cell(column = 2, row = l).value)
-            if len(name_temp) > 5:
+            name_temp = str(sheet.cell(column = 1, row = l).value)
+            if len(name_temp) > 6:
                 obj = AGD(name = name_temp, 
-                        count = sheet.cell(column = 4, row = l).value,
-                        price = sheet.cell(column = 7, row = l).value,
+                        count = sheet.cell(column = 3, row = l).value,
+                        price = sheet.cell(column = 4, row = l).value,
                         sklad = 'nexa Під замовлення')
                 agd.append(obj)
     return agd

@@ -1,15 +1,16 @@
 from itertools import count
 from MARPA.marpa import FromMarpa, exists
 from NEXA.nexa import FromNexa, FromNexaZakaz, exists
+from BISS.biss import FromBiss, exists
 from AGD import AGD
 from openpyxl import load_workbook
 # from notebooks.notebooks import WriteToNotebooks
 
 agd = []
-delivery = 1.18
-NORMA = 2300
-freezer = 500
-pralka = 400
+delivery = 1.17
+NORMA = 2200
+freezer = 550
+pralka = 450
 
 #print object to console
 def PrintAGD(obj):
@@ -31,7 +32,7 @@ def PriceDelivery():
         elif obj.name.find("TV ") >= 0: obj.type = "TV"
     
     for obj in agd:
-        if obj.type == "TV": obj.price = obj.price * 1.23
+        if obj.type == "TV" and obj.sklad == "marpa": obj.price *= 1.23
         brutto = obj.price
         netto = brutto/1.23
         percent =  netto * (delivery-1)
@@ -81,19 +82,30 @@ def WriteToPrice():
 
 
 # Load from MARPA and write to price)
+max_len_price = len(agd)
+
 FromMarpa(agd)
-len_marpa = len(agd)
+len_marpa = len(agd) - max_len_price
 print(f"Load from MARPA: {len_marpa} objects\n")
+max_len_price = len_marpa
 # PrintAGD(agd[0])
 
 FromNexa(agd)
-len_nexa = len(agd) - len_marpa
+len_nexa = len(agd) - max_len_price
 print(f"Load from Nexa: {len_nexa} objects\n")
+max_len_price += len_nexa
 
-# FromNexaZakaz(agd)
-# len_nexa_zakaz = len(agd) - len_nexa
-# print(f"Load from Nexa for order: {len_nexa_zakaz} objects\n")
+FromBiss(agd)
+len_biss = len(agd) - max_len_price
+print(f"Load from Biss: {len_biss} objects\n")
+max_len_price += len_biss
 
+FromNexaZakaz(agd)
+len_nexa_zakaz = len(agd) - max_len_price
+print(f"Load from Nexa: {len_nexa_zakaz} objects\n")
+max_len_price += len_nexa_zakaz
+
+print(f"Loaded: {max_len_price} objects\n")
 
 PriceDelivery()
 # PrintAGD(agd[54])
