@@ -7,18 +7,11 @@ def exists(path):
     try:
         os.stat(path)
     except OSError:
-        # print(f"File: {path} isn`t exists")
+        print(f"File: {path} isn`t exists")
         return False
-    print(f"File: {path} is exists")
+    # print(f"File: {path} is exists")
     return True
 #convert fild PRICE in normal number
-
-# def PriceToBrutto(price):
-#     if price[0] == '.': return 0
-#     price = price.replace("  ", " ")
-#     price = price.split(' ')
-#     return price[0]
-
 
 def FromBiss(agd):
     if exists('BISS/BISS.xlsx'):

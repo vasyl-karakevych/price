@@ -25,26 +25,54 @@ def PrintAGD(obj):
 
 # count and add delivery to price
 def PriceDelivery():
+
     for obj in agd:
-        if   obj.name.find("CHŁODZ") >= 0 or obj.name.find("Chłodziarka") >=0 or obj.name.find("LODÓWKA") >=0 : obj.type = "freezer"
-        elif obj.name.find("PRALKA") >= 0 or obj.name.find("Pralka") >= 0: obj.type = "pralka"
-        elif obj.name.find("PRALKO_SUSZ") >= 0: obj.type = "pralko-susharka"
-        elif obj.name.find("TV ") >= 0: obj.type = "TV"
+        if   obj.name.find("CHŁODZ") >= 0 or obj.name.find("Chłodziarka") >=0 or obj.name.find("LODÓWKA") >=0 : obj.type = "Холодильник"
+        elif obj.name.find("PRALKA") >= 0 or obj.name.find("Pralka") >= 0: obj.type = "Пралка"
+        elif obj.name.find("PRALKO_SUSZ") >= 0: obj.type = "Пралко-сушарка"
+        elif obj.name.find("TV ") >= 0: obj.type = "Телевізор"
     
+    # створюємо словник із значеннями країн походження товару
+    country_mapping = {
+    "WŁOCHY": "Китай", "Włochy": "Китай", "CHINY": "Китай", "Chiny": "Китай",
+    "SŁOWENIA": "Словенія", "Słowenia": "Словенія",
+    "POLSKA": "Польща", "POLAND": "Польща", "Polska": "Польща",
+    "RUMUNIA": "Румунія",
+    "TURCJA": "Туреччина", "Turcja": "Туреччина",
+    "SERBIA": "Сербія",
+    "NIEMCY": "Німеччина", "Niemcy": "Німеччина",
+    "INDONEZJA": "Індонезія",
+    "UK": "Великобританія", "Wielka Brytania": "Великобританія",
+    "EU": "Європа",
+    "HISZPANIA": "Іспанія", "Hiszpania": "Іспанія",
+    "FRANCJA": "Франція",
+    "Grecja": "Греція",
+    "Malesia": "Малайзія", "MALEZJA": "Малайзія",
+    "Węgry": "Угорщина",
+    "KOREA": "Корея",
+    "SŁOWACJA": "Словаччина",
+    "Wietnam": "В'єтнам"
+    }    
+ 
     for obj in agd:
-        if obj.type == "TV" and obj.sklad == "marpa": obj.price *= 1.23
+        # Пілставляємо значення із словника
+        obj.country = country_mapping.get(obj.country, "-")
+        
+        # В прайсах на Marpi телевізори вказують у нетто. Відповідно нижче вираз міняє нетто на брутто ціну телевізорів.
+        if obj.type == "Телевізор" and obj.sklad == "marpa": obj.price *= 1.23
+
         brutto = obj.price
         netto = brutto/1.23
         percent =  netto * (delivery-1)
 
 
         if brutto > 0:
-            if obj.type == "freezer": 
+            if obj.type == "Холодильник": 
                 if brutto > 1000 and brutto < NORMA:
                     obj.price_with_delivery = round(netto + freezer)
                 elif brutto > NORMA:
                     obj.price_with_delivery = round(netto + freezer + percent)
-            elif obj.type == "pralka" or obj.type == "pralko-susharka":
+            elif obj.type == "Пралка" or obj.type == "Пралко-сушарка":
                 if brutto < NORMA: 
                     obj.price_with_delivery = round(netto + pralka)
                 elif brutto > NORMA:              
@@ -81,31 +109,35 @@ def WriteToPrice():
     wb.save("price_vasyl.xlsx") 
 
 
-# Load from MARPA and write to price)
+# TotalCount inprice
 max_len_price = len(agd)
 
+# Load from MARPA
 FromMarpa(agd)
 len_marpa = len(agd) - max_len_price
-print(f"Load from MARPA: {len_marpa} objects\n")
+print(f"Load from MARPA: {len_marpa} records")
 max_len_price = len_marpa
 # PrintAGD(agd[0])
 
+# Load from NEXA
 FromNexa(agd)
 len_nexa = len(agd) - max_len_price
-print(f"Load from Nexa: {len_nexa} objects\n")
+print(f"Load from Nexa: {len_nexa} records")
 max_len_price += len_nexa
 
+# Load from BISS
 FromBiss(agd)
 len_biss = len(agd) - max_len_price
-print(f"Load from Biss: {len_biss} objects\n")
+print(f"Load from Biss: {len_biss} records")
 max_len_price += len_biss
 
+# Load from NEXA Zakaz
 FromNexaZakaz(agd)
 len_nexa_zakaz = len(agd) - max_len_price
-print(f"Load from Nexa: {len_nexa_zakaz} objects\n")
+print(f"Load from Nexa: {len_nexa_zakaz} records")
 max_len_price += len_nexa_zakaz
 
-print(f"Loaded: {max_len_price} objects\n")
+print(f"Loaded: {max_len_price} records")
 
 PriceDelivery()
 # PrintAGD(agd[54])

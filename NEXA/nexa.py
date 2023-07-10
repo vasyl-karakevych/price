@@ -7,9 +7,9 @@ def exists(path):
     try:
         os.stat(path)
     except OSError:
-        # print(f"File: {path} isn`t exists")
+        print(f"File: {path} isn`t exists")
         return False
-    print(f"File: {path} is exists")
+    # print(f"File: {path} is exists")
     return True
 #convert fild PRICE in normal number
 
