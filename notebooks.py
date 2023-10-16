@@ -36,15 +36,6 @@ class laptop:
     def GetNetto(self): return self.netto
     def GetPriceWithDelivery(self): return self.price_with_delivery
 
-    # def SetSymbol(self, symbol): self.symbol = symbol
-    # def SetName(self, name): self.name = name
-    # def SetCount(self, count): self.count = count
-    # def SetDescription(self, description): self.description = description
-    # def SetKeyboard(self, keyboard): self.keyboard = keyboard
-    # def SetNetto(self, netto): self.netto = netto
-    # def SetPriceWithDelivery(self, percent): 
-    #     self.price_with_delivery = round(int(self.netto*(percent/100+1))) 
-# load keyboard from file localization.csv 
     def Keyboard(self):
         file = open("notebooks/localization.csv", 'r')
         key_lines = csv.reader(file)
@@ -94,7 +85,7 @@ def FromNotebooks():
                     count = sheet.cell(column = 3, row = l).value,                  
                     netto = sheet.cell(column = 4, row = l).value/1.23,
                     description = sheet.cell(column = 5, row = l).value,
-                    price_with_delivery = round(int(sheet.cell(column = 4, row = l).value)/1.23*1.15)) #percent                 
+                    price_with_delivery = round(int(sheet.cell(column = 4, row = l).value)/1.23*1.18)) #percent                 
             laptops.append(obj)
 
     print(f"Loaded {len(laptops)} laptops!!!")

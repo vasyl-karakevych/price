@@ -9,7 +9,7 @@ from openpyxl import load_workbook
 agd = []
 delivery = 1.17
 NORMA = 2200
-freezer = 550
+freezer = 500
 pralka = 450
 
 #print object to console
@@ -25,12 +25,13 @@ def PrintAGD(obj):
 
 # count and add delivery to price
 def PriceDelivery():
-
+    
     for obj in agd:
-        if   obj.name.find("CHŁODZ") >= 0 or obj.name.find("Chłodziarka") >=0 or obj.name.find("LODÓWKA") >=0 : obj.type = "Холодильник"
-        elif obj.name.find("PRALKA") >= 0 or obj.name.find("Pralka") >= 0: obj.type = "Пралка"
-        elif obj.name.find("PRALKO_SUSZ") >= 0: obj.type = "Пралко-сушарка"
-        elif obj.name.find("TV ") >= 0: obj.type = "Телевізор"
+        name = str(obj.GetName())
+        if   name.find("CHŁODZ") >= 0 or name.find("Chłodziarka") >=0 or name.find("LODÓWKA") >=0 : obj.type = "Холодильник"
+        elif name.find("PRALKA") >= 0 or name.find("Pralka") >= 0: obj.type = "Пралка"
+        elif name.find("PRALKO-SUSZ") >= 0 or name.find("PRALKO SUSZARKA") >= 0 or name.find("Pralko-suszarka") >= 0: obj.type = "Пралко-сушарка" 
+        elif name.find("TV ") >= 0: obj.type = "Телевізор"
     
     # створюємо словник із значеннями країн походження товару
     country_mapping = {
@@ -63,7 +64,8 @@ def PriceDelivery():
 
         brutto = obj.price
         netto = brutto/1.23
-        percent =  netto * (delivery-1)
+        tmp = (brutto-NORMA)/1.23
+        percent = tmp * (delivery -1)
 
 
         if brutto > 0:
@@ -72,6 +74,7 @@ def PriceDelivery():
                     obj.price_with_delivery = round(netto + freezer)
                 elif brutto > NORMA:
                     obj.price_with_delivery = round(netto + freezer + percent)
+                    # print(obj.GetName() + 'netto=' + str(netto) + ' freezer' + str(freezer) + ' - ' + str(percent))
             elif obj.type == "Пралка" or obj.type == "Пралко-сушарка":
                 if brutto < NORMA: 
                     obj.price_with_delivery = round(netto + pralka)
@@ -84,7 +87,7 @@ def WriteToPrice():
     sheet = wb.active
     
     # Clear
-    maxColumn = int(sheet.max_column + 1)
+    maxColumn = int(sheet.max_column - 5)
     maxRow = int(sheet.max_row + 1)
     for i in range(1, maxColumn):
         for j in range(2, maxRow):
@@ -92,7 +95,8 @@ def WriteToPrice():
 
     counter = 1
     for obj in agd:
-        if (obj.count >0):
+       # print(obj.GetCount(), '\t- ', counter)
+        if (int(obj.GetCount()) > 0):
             sheet.cell(column=1, row=counter+1).value = counter
             sheet.cell(column=2, row=counter+1).value = obj.GetName()
             sheet.cell(column=3, row=counter+1).value = obj.GetDescription()
@@ -131,18 +135,18 @@ len_biss = len(agd) - max_len_price
 print(f"Load from Biss: {len_biss} records")
 max_len_price += len_biss
 
-# Load from NEXA Zakaz
+#Load from NEXA Zakaz
 FromNexaZakaz(agd)
 len_nexa_zakaz = len(agd) - max_len_price
-print(f"Load from Nexa: {len_nexa_zakaz} records")
+print(f"Load from Nexa na Zakaz: {len_nexa_zakaz} records")
 max_len_price += len_nexa_zakaz
 
 print(f"Loaded: {max_len_price} records")
 
 PriceDelivery()
-# PrintAGD(agd[54])
+# PrintAGD(agd[1541])
 WriteToPrice()
 
-# LAPTOPS
-# laptops = AGD()
-# WriteToNotebooks(laptops)
+ #LAPTOPS
+ #laptops = AGD()
+ #WriteToNotebooks(laptops)
